@@ -1,58 +1,50 @@
 import React, { useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import { DarkModeContext } from '../DarkModeContext';
+import { DarkModeContext } from '../../DarkModeContext';
 
-const KalenderScreen = () => {
+
+// Vordefinierte Farb-Themes für den Kalender
+const lightCalendarTheme = {
+  calendarBackground: '#FFFFFF',
+  dayTextColor: '#2d4150',        // Standard dunkle Schrift auf hellem Hintergrund
+  monthTextColor: '#000000',      // Monatsüberschrift in Schwarz
+  arrowColor: '#000000',          // Pfeile in Schwarz
+  todayTextColor: '#00adf5',      // Heutiges Datum in Blau (Standard)
+  selectedDayBackgroundColor: '#00adf5', // Markierter Tag in Blau
+  selectedDayTextColor: '#FFFFFF'
+};
+const darkCalendarTheme = {
+  calendarBackground: '#121212',
+  dayTextColor: '#FFFFFF',        // Helle Schrift auf dunklem Hintergrund
+  monthTextColor: '#FFFFFF',      // Monatsüberschrift in Weiß
+  arrowColor: '#FFFFFF',          // Pfeile in Weiß
+  todayTextColor: '#ffa726',      // Heutiges Datum in auffälligem Orange im Dark Mode
+  selectedDayBackgroundColor: '#333333', // Markierter Tag in Grau
+  selectedDayTextColor: '#FFFFFF',
+  textDisabledColor: '#555555'    // Deaktivierte Tage abgedunkelt
+};
+
+function KalenderScreen() {
   const { isDarkMode } = useContext(DarkModeContext);
-
-  const calendarTheme = {
-    backgroundColor: isDarkMode ? '#121212' : '#FFFFFF',
-    calendarBackground: isDarkMode ? '#121212' : '#FFFFFF',
-    textSectionTitleColor: isDarkMode ? '#FFFFFF' : '#000000',
-    selectedDayBackgroundColor: '#00adf5',
-    selectedDayTextColor: '#FFFFFF',
-    todayTextColor: '#00adf5',
-    dayTextColor: isDarkMode ? '#FFFFFF' : '#2d4150',
-    textDisabledColor: isDarkMode ? '#555555' : '#d9e1e8',
-    arrowColor: isDarkMode ? '#FFFFFF' : 'orange',
-    monthTextColor: isDarkMode ? '#FFFFFF' : '#000000',
-    indicatorColor: isDarkMode ? '#FFFFFF' : 'black',
-    textDayFontWeight: '300',
-    textMonthFontWeight: 'bold',
-    textDayHeaderFontWeight: '300',
-    textDayFontSize: 16,
-    textMonthFontSize: 20,
-    textDayHeaderFontSize: 14,
-    dotColor: isDarkMode ? '#00adf5' : '#00adf5',
-    selectedDotColor: '#FFFFFF',
-    disabledArrowColor: isDarkMode ? '#555555' : '#d9e1e8',
-  };
+  const theme = isDarkMode ? darkCalendarTheme : lightCalendarTheme;
 
   return (
-    <View style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.calendarBackground }]}>
       <Calendar
-        current={new Date().toISOString().split('T')[0]}
-        markedDates={{
-          '2025-04-28': { selected: true, marked: true, selectedColor: 'blue' },
-        }}
-        theme={calendarTheme}
-        style={{
-          backgroundColor: isDarkMode ? '#121212' : '#FFFFFF',
-        }}
-        onDayPress={day => {
-          console.log('Ausgewähltes Datum:', day.dateString);
-        }}
+        // Key wechselt mit Modus, um vollständiges Re-Rendering zu erzwingen (falls nötig)
+        key={isDarkMode ? 'dark' : 'light'} 
+        theme={theme}
+        // Weitere Calendar-Props können hier hinzugefügt werden (z.B. onDayPress, markedDates, etc.)
       />
-    </View>
+    </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 50,
-  },
+    flex: 1
+  }
 });
 
 export default KalenderScreen;

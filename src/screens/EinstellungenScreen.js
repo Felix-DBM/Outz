@@ -1,36 +1,36 @@
 import React, { useContext } from 'react';
-import { View, Text, Switch, StyleSheet } from 'react-native';
-import { DarkModeContext } from '../DarkModeContext';
+import { SafeAreaView, Text, StyleSheet, Switch } from 'react-native';
+import { DarkModeContext } from '../../DarkModeContext';
 
-const EinstellungenScreen = () => {
-  const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
+
+function EinstellungenScreen() {
+  const { isDarkMode, setIsDarkMode } = useContext(DarkModeContext);
 
   return (
-    <View style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
-      <Text style={[styles.text, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
-        {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+    <SafeAreaView style={[styles.container, { backgroundColor: isDarkMode ? '#121212' : '#FFFFFF' }]}>
+      <Text style={[styles.label, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}>
+        Dark Mode {isDarkMode ? 'An' : 'Aus'}
       </Text>
       <Switch
-        trackColor={{ false: '#767577', true: '#81b0ff' }}
-        thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleDarkMode}
         value={isDarkMode}
+        onValueChange={(value) => setIsDarkMode(value)}
+        thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
+        trackColor={{ false: '#767577', true: '#81b0ff' }}
       />
-    </View>
+    </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center'
   },
-  text: {
-    fontSize: 24,
-    marginBottom: 20,
-  },
+  label: {
+    fontSize: 18, 
+    marginBottom: 8
+  }
 });
 
 export default EinstellungenScreen;

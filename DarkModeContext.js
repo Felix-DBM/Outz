@@ -3,14 +3,11 @@ import React, { createContext, useState } from 'react';
 export const DarkModeContext = createContext();
 
 export const DarkModeProvider = ({ children }) => {
+  // Globaler Dark Mode Zustand
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const toggleDarkMode = () => {
-    setIsDarkMode(prevMode => !prevMode);
-  };
-
   return (
-    <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+    <DarkModeContext.Provider value={{ isDarkMode, setIsDarkMode }}>
       {children}
     </DarkModeContext.Provider>
   );

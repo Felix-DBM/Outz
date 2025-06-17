@@ -1,22 +1,28 @@
-import React, { useContext } from 'react';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import TabsNavigator from './src/TabsNavigator';
-import { DarkModeProvider, DarkModeContext } from './src/DarkModeContext';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const MainApp = () => {
-  const { isDarkMode } = useContext(DarkModeContext);
+import { DarkModeProvider } from './DarkModeContext';
+import KalenderScreen from './src/screens/KalenderScreen';
+import ChatsScreen from './src/screens/ChatsScreen';
+import BeliebtScreen from './src/screens/BeliebtScreen';
+import SucheScreen from './src/screens/SucheScreen';
+import EinstellungenScreen from './src/screens/EinstellungenScreen';
 
-  return (
-    <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
-      <TabsNavigator />
-    </NavigationContainer>
-  );
-};
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <DarkModeProvider>
-      <MainApp />
+      <NavigationContainer>
+        <Tab.Navigator screenOptions={{ headerShown: false }}>
+          <Tab.Screen name="Kalender" component={KalenderScreen} />
+          <Tab.Screen name="Chats" component={ChatsScreen} />
+          <Tab.Screen name="Beliebt" component={BeliebtScreen} />
+          <Tab.Screen name="Suche" component={SucheScreen} />
+          <Tab.Screen name="Einstellungen" component={EinstellungenScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
     </DarkModeProvider>
   );
 }
