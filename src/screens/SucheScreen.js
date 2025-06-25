@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { SafeAreaView, Text, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, View } from 'react-native';
 import { DarkModeContext } from '../../DarkModeContext';
 import { useNavigation } from '@react-navigation/native';
 
@@ -48,8 +48,9 @@ const activities = [
 
 function SucheScreen() {
   const { isDarkMode } = useContext(DarkModeContext);
-  const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
+  const [searchText, setSearchText] = useState('');
+  const [location, setLocation] = useState('');
 
   const theme = {
     background: isDarkMode ? '#121212' : '#FFFFFF',
@@ -64,6 +65,7 @@ function SucheScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      {/* Suchfeld */}
       <TextInput
         placeholder="Suche nach Freizeitaktivitäten..."
         placeholderTextColor={isDarkMode ? '#AAAAAA' : '#888888'}
@@ -74,7 +76,23 @@ function SucheScreen() {
           {
             color: theme.text,
             backgroundColor: theme.inputBackground,
-            borderColor: theme.border
+            borderColor: theme.border,
+          }
+        ]}
+      />
+
+      {/* Standortfeld */}
+      <TextInput
+        placeholder="Standort eingeben (optional)..."
+        placeholderTextColor={isDarkMode ? '#AAAAAA' : '#888888'}
+        value={location}
+        onChangeText={setLocation}
+        style={[
+          styles.input,
+          {
+            color: theme.text,
+            backgroundColor: theme.inputBackground,
+            borderColor: theme.border,
           }
         ]}
       />
@@ -88,7 +106,7 @@ function SucheScreen() {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={[styles.item, { backgroundColor: theme.inputBackground }]}
-              onPress={() => navigation.navigate('AktivitaetDetail', { activity: item })}
+              onPress={() => navigation.navigate('AktivitaetDetail', { activity: item, location })}
             >
               <Text style={{ color: theme.text, fontSize: 16 }}>{item.title}</Text>
             </TouchableOpacity>
@@ -109,7 +127,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 10,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   item: {
     padding: 12,
